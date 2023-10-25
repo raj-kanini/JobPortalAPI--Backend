@@ -38,11 +38,13 @@ namespace Job_Portal_API.Controllers
             return Ok(jobDescription);
         }
 
+        // POST: api/JobDescription
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] Job_Description jobDescription)
         {
             if (jobDescription == null)
             {
+                // If the job description data is invalid, return a 400 Bad Request.
                 return BadRequest("JobDescription data is invalid.");
             }
 
@@ -51,10 +53,12 @@ namespace Job_Portal_API.Controllers
                 _dbContext.JobDescription.Add(jobDescription);
                 await _dbContext.SaveChangesAsync();
 
+                // Return a 201 Created status with the newly created job description.
                 return CreatedAtAction("Get", new { id = jobDescription.Id }, jobDescription);
             }
             catch (Exception ex)
             {
+                // If an exception occurs during the process, return a 500 Internal Server Error with an error message.
                 return StatusCode(500, $"Error: {ex.Message}");
             }
         }
